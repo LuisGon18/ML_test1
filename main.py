@@ -1,6 +1,7 @@
 from file_loader.data_loader import DataLoader
 from preprocessing import PreprocessingData
 from training import ModelTrainer
+from model_evaluation import ModelEvaluator
 
 if __name__ == "__main__":
     # 1) Cargar el CSV
@@ -25,3 +26,15 @@ if __name__ == "__main__":
         trainer = ModelTrainer(input_size=input_size, num_classes=num_classes)
         trainer.build_model()
         trainer.train(x_train, y_train, epochs=20)
+
+        # 5. Evaluación del modelo
+        evaluator = ModelEvaluator(trainer.model)
+        results = evaluator.evaluate(x_test, y_test)
+
+        print("Loss:", results["loss"])
+        print("Accuracy:", results["accuracy"])
+        print("Precision:", results["precision"])
+        print("Recall:", results["recall"])
+        print("F1:", results["f1"])
+        print("Confusion Matrix:\n", results["confusion_matrix"])
+        print("Classification Report:\n", results["classification_report"])
